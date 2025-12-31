@@ -29,7 +29,7 @@ screenH = root.winfo_screenheight()
 
 # scale image so that it's only 4% of the screen width
 # i havent tested this on anything other than 1080p so good luck 4k, 2k, 720p (ew) monitor users
-targetW = int(screenW * 0.04)
+targetW = int(screenW * 0.0625)
 scaleX = max(1, originalImg.width() // targetW)
 clippyImg = originalImg.subsample(scaleX, scaleX)
 label = tkinter.Label(root, image=clippyImg, bg="black")
@@ -52,7 +52,7 @@ radiusY = (screenH - winH) // 2
 # might need to use this??? idk just in case
 # and also apparently this is good code hahaha
 # LAUGH AT THEIR FUCKING FACES
-speed = 0.03 # do not up this to 1, biggest mistake of my life
+speed = 0.02 # do not up this to 1, biggest mistake of my life
 grabbedSpeed = speed * 0.05 # speed when ur cursor is grabbed
 t = 0.0 # wowie shorterned variable names apparently this is good code as well??????
 
