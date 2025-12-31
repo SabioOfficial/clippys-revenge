@@ -94,7 +94,7 @@ breakFreeSpeed = 50000 # (im pretty sure this is in pixels per second) if i code
 bullets = []
 nextShotTime = time.time() + random.uniform(1, 4)
 
-bulletSpeed = screenW * 0.5
+bulletSpeed = screenW
 knockbackDistance = int(screenW * 0.10)
 recoilDistance = 20 # TODO: make this based on screen size
 
