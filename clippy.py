@@ -3,6 +3,7 @@ import math
 import ctypes
 from ctypes import wintypes
 import time
+from PIL import Image, ImageTk
 
 # window cursor stuff (oh god please help)
 user32 = ctypes.windll.user32
@@ -21,7 +22,7 @@ root.attributes("-topmost", True) # make sure window is always on top because cl
 root.attributes("-transparentcolor", "black")
 
 # load funni clippy image as it stares into your soul (real)
-originalImg = tkinter.PhotoImage(file="clippy.png")
+originalImg = Image.open("clippy.png")
 
 # get screen size :bleh:
 screenW = root.winfo_screenwidth()
@@ -29,12 +30,20 @@ screenH = root.winfo_screenheight()
 
 # scale image so that it's only 4% of the screen width
 # i havent tested this on anything other than 1080p so good luck 4k, 2k, 720p (ew) monitor users
+## update: i've decided to redo whatever the fuck this is, wish me luck
 targetW = int(screenW * 0.0625)
-scaleX = max(1, originalImg.width() // targetW)
-clippyImg = originalImg.subsample(scaleX, scaleX)
+scaleRatio = targetW / originalImg.width
+targetH = int(originalImg.height * scaleRatio)
+pilRight = originalImg.resize((targetW, targetH), Image.NEAREST)
+pilLeft = pilRight.transpose(Image.FLIP_LEFT_RIGHT)
+clippyImg = ImageTk.PhotoImage(pilRight)
+clippyImgFlipped = ImageTk.PhotoImage(pilLeft)
 label = tkinter.Label(root, image=clippyImg, bg="black")
 label.pack()
+label.img = clippyImg
+label.imgFlipped = clippyImgFlipped
 root.update_idletasks()
+# ok you should be able to read this now (not)
 
 # window sizerings
 # i hope this breaks because funni
@@ -76,6 +85,10 @@ def moveClippy():
   root.geometry(f"+{int(x)}+{int(y)}")
   clippyCenterX = int(x + winW // 2)
   clippyCenterY = int(y + winH // 2)
+  if lastMouseX < clippyCenterX:
+    label.config(image=label.img)
+  else:
+    label.config(image=label.imgFlipped)
 
   # track the rat
   # aka mouse
